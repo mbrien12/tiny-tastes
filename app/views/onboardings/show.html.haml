@@ -1,0 +1,9 @@
+.bg-white.rounded-3xl.shadow-md.p-8
+
+  - unless @onboarding.on_summary? || @onboarding.completed?
+    = render "progress_bar", onboarding: @onboarding
+
+  - if @onboarding.completed?
+    = render "completed"
+  - else
+    = render @onboarding.current_step, user: @user, onboarding: @onboarding

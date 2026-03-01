@@ -1,0 +1,62 @@
+%h2.text-xl.font-semibold.text-sage-800.mb-1 Review your order
+%p.text-sm.text-sage-500.mb-6 Everything look right? Confirm to start your subscription.
+
+.space-y-4.mb-8
+
+  / Personal section
+  .bg-sage-50.rounded-2xl.p-5
+    .flex.items-center.justify-between.mb-3
+      %h3.font-semibold.text-sage-700 Personal details
+      = button_to "Edit", onboarding_path(onboarding.token),
+          method: :patch,
+          params: {direction: "back", target_step: "personal"},
+          class: "text-xs text-sage-500 hover:text-sage-700 underline bg-transparent border-0 p-0 cursor-pointer"
+    .grid.grid-cols-2.gap-2.text-sm
+      %div
+        %span.text-sage-500 Name
+        %p.font-medium.text-sage-800= "#{user.first_name} #{user.last_name}"
+      %div
+        %span.text-sage-500 Email
+        %p.font-medium.text-sage-800= user.email
+      %div
+        %span.text-sage-500 Phone
+        %p.font-medium.text-sage-800= user.phone
+
+  / Address section
+  .bg-sage-50.rounded-2xl.p-5
+    .flex.items-center.justify-between.mb-3
+      %h3.font-semibold.text-sage-700 Delivery address
+    .text-sm
+      %p.font-medium.text-sage-800= user.address_line_1
+      - if user.address_line_2.present?
+        %p.font-medium.text-sage-800= user.address_line_2
+      %p.font-medium.text-sage-800= "#{user.city}, #{user.postcode}"
+
+  / Plan section
+  .bg-sage-50.rounded-2xl.p-5
+    .flex.items-center.justify-between.mb-3
+      %h3.font-semibold.text-sage-700 Your plan
+    .text-sm.space-y-1
+      %p
+        %span.text-sage-500 Plan:
+        %span.font-medium.text-sage-800.ml-1= user.plan.name
+      %p
+        %span.text-sage-500 Meals per week:
+        %span.font-medium.text-sage-800.ml-1= user.plan.meals_per_week
+      %p
+        %span.text-sage-500 Weekly cost:
+        %span.font-medium.text-sage-800.ml-1= user.plan.price_display
+      %p
+        %span.text-sage-500 Baby's age:
+        %span.font-medium.text-sage-800.ml-1= "#{user.baby_age_years} #{"year".pluralize(user.baby_age_years)}"
+      %p
+        %span.text-sage-500 First delivery:
+        %span.font-medium.text-sage-800.ml-1= user.start_date.strftime("%d %B %Y")
+
+= button_to "Confirm subscription ✓", onboarding_path(onboarding.token),
+    method: :patch,
+    class: "w-full bg-sage-600 hover:bg-sage-700 text-white font-semibold text-lg py-4 rounded-2xl shadow transition-colors"
+
+= form_with url: onboarding_path(onboarding.token), method: :patch, class: "mt-4" do |f|
+  = f.hidden_field :direction, value: "back", name: "direction"
+  = f.submit "← Back", class: "w-full border-2 border-sage-300 text-sage-700 font-semibold py-3 rounded-2xl hover:bg-sage-50 transition-colors cursor-pointer bg-white"

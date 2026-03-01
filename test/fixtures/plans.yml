@@ -1,0 +1,17 @@
+starter:
+  name: Starter
+  meals_per_week: 5
+  price_pence: 2999
+  description: Perfect for first flavours
+
+growing:
+  name: Growing
+  meals_per_week: 10
+  price_pence: 4999
+  description: Ideal for curious eaters
+
+family:
+  name: Family
+  meals_per_week: 15
+  price_pence: 6999
+  description: Our most popular plan

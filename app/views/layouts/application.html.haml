@@ -1,0 +1,18 @@
+!!!
+%html{lang: "en"}
+  %head
+    %title Mindful Chef — TinyTastes
+    %meta{name: "viewport", content: "width=device-width,initial-scale=1"}
+    = csrf_meta_tags
+    = csp_meta_tag
+    = stylesheet_link_tag "tailwind", "data-turbo-track": "reload"
+    = stylesheet_link_tag "application", "data-turbo-track": "reload"
+    = javascript_importmap_tags
+  %body.bg-amber-50.min-h-screen
+    %nav.bg-sage-700.py-4.px-6.shadow-sm
+      .max-w-2xl.mx-auto.flex.items-center.gap-3
+        %div
+          %span.text-white.font-bold.text-xl Mindful Chef
+          %span.text-sage-200.text-sm.ml-2 TinyTastes
+    %main.max-w-2xl.mx-auto.px-4.py-10
+      = yield

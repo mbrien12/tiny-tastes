@@ -1,0 +1,66 @@
+%h2.text-xl.font-semibold.text-sage-800.mb-1 Choose your plan
+%p.text-sm.text-sage-500.mb-6 Pick the box size that suits your little one's appetite.
+
+- if user.errors.any?
+  .bg-red-50.border.border-red-200.rounded-xl.p-4.mb-6
+    %ul.list-disc.list-inside.text-sm.text-red-700
+      - user.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_with url: onboarding_path(onboarding.token), method: :patch, class: "space-y-6" do |f|
+
+  / Plan cards
+  .space-y-3
+    %p.text-sm.font-medium.text-sage-700.mb-2 Select a plan
+    - recommended_plan = Plan.find_by(name: "Growing")
+    - effective_plan_id = user.plan_id || recommended_plan&.id
+    - Plan.all.each do |plan|
+      - selected = effective_plan_id == plan.id
+      - recommended = plan.name == "Growing"
+      %label.block.cursor-pointer
+        %input{type: "radio", name: "user[plan_id]", value: plan.id, class: "sr-only peer",
+          checked: selected}
+        - card_class = recommended ? "border-2 rounded-2xl p-5 transition-all border-amber-400 bg-amber-50 hover:border-amber-500 peer-checked:border-amber-500 peer-checked:bg-amber-100" : "border-2 rounded-2xl p-5 transition-all border-sage-200 hover:border-sage-300 peer-checked:border-sage-500 peer-checked:bg-sage-50"
+        %div{class: card_class}
+          - if recommended
+            .flex.justify-end.-mt-1.-mr-1.mb-2
+              %span.inline-block.bg-amber-400.text-amber-900.text-xs.font-bold.px-3.py-1.rounded-full Most popular
+          .flex.items-center.justify-between
+            .flex.items-center.gap-4
+              - dot_class = selected ? "border-sage-500 bg-sage-500" : (recommended ? "border-amber-400" : "border-sage-300")
+              .w-5.h-5.rounded-full.border-2.flex.items-center.justify-center.flex-shrink-0{class: dot_class}
+                - if selected
+                  %span.text-white.text-xs ✓
+              %div
+                %div.font-semibold.text-sage-800= plan.name
+                %div.text-sm.text-sage-500= "#{plan.meals_per_week} meals per week"
+                %div.text-xs.text-sage-400.mt-1= plan.description
+            %div.text-right
+              %div.text-2xl.font-bold.text-sage-700= plan.price_display
+              %div.text-xs.text-sage-400 per week
+
+  / Baby age & start date
+  .grid.grid-cols-2.gap-4
+    %div
+      %label.block.text-sm.font-medium.text-sage-700.mb-1 Baby's age (years)
+      - default_age = user.baby_age_years || 1
+      %input{type: "number", name: "user[baby_age_years]", min: 0, max: 3,
+        value: default_age,
+        placeholder: "0",
+        class: "w-full border border-sage-200 rounded-xl px-4 py-3 text-sage-900 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:border-transparent"}
+      %p.text-xs.text-sage-400.mt-1 Must be between 0 and 3
+
+    %div
+      %label.block.text-sm.font-medium.text-sage-700.mb-1 First delivery date
+      - default_date = user.start_date || (Date.today + 7)
+      %input{type: "date", name: "user[start_date]",
+        value: default_date,
+        min: Date.today.to_s,
+        class: "w-full border border-sage-200 rounded-xl px-4 py-3 text-sage-900 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:border-transparent"}
+
+  %input{type: "submit", value: "Review & confirm →",
+    class: "w-full bg-sage-600 hover:bg-sage-700 text-white font-semibold text-lg py-4 rounded-2xl shadow transition-colors cursor-pointer"}
+
+= form_with url: onboarding_path(onboarding.token), method: :patch do |f|
+  = f.hidden_field :direction, value: "back", name: "direction"
+  = f.submit "← Back", class: "w-full border-2 border-sage-300 text-sage-700 font-semibold py-4 rounded-2xl hover:bg-sage-50 transition-colors cursor-pointer mt-2"

@@ -1,0 +1,34 @@
+.grid.grid-cols-2.gap-4
+  .col-span-1
+    %label.block.text-sm.font-medium.text-sage-700.mb-1 First name
+    %input{type: "text", name: "user[first_name]",
+      value: user.first_name,
+      placeholder: "Jane",
+      autocomplete: "given-name",
+      class: "w-full border border-sage-200 rounded-xl px-4 py-3 text-sage-900 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:border-transparent"}
+  .col-span-1
+    %label.block.text-sm.font-medium.text-sage-700.mb-1 Last name
+    %input{type: "text", name: "user[last_name]",
+      value: user.last_name,
+      placeholder: "Smith",
+      autocomplete: "family-name",
+      class: "w-full border border-sage-200 rounded-xl px-4 py-3 text-sage-900 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:border-transparent"}
+
+.col-span-2
+  %label.block.text-sm.font-medium.text-sage-700.mb-1 Email address
+  %input{type: "email", name: "user[email]",
+    value: user.email,
+    placeholder: "jane@example.com",
+    autocomplete: "email",
+    class: "w-full border border-sage-200 rounded-xl px-4 py-3 text-sage-900 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:border-transparent"}
+
+.col-span-2
+  %label.block.text-sm.font-medium.text-sage-700.mb-1 Phone number
+  %input{type: "tel", name: "user[phone]",
+    value: user.phone,
+    placeholder: "+44 7700 900000",
+    autocomplete: "tel",
+    class: "w-full border border-sage-200 rounded-xl px-4 py-3 text-sage-900 focus:outline-none focus:ring-2 focus:ring-sage-400 focus:border-transparent"}
+
+%input{type: "submit", value: "Continue →",
+  class: "w-full bg-sage-600 hover:bg-sage-700 text-white font-semibold text-lg py-4 rounded-2xl shadow transition-colors cursor-pointer mt-2"}

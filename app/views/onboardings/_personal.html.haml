@@ -1,0 +1,11 @@
+%h2.text-xl.font-semibold.text-sage-800.mb-1 Personal details
+%p.text-sm.text-sage-500.mb-6 Update your contact information below.
+
+- if user.errors.any?
+  .bg-red-50.border.border-red-200.rounded-xl.p-4.mb-6
+    %ul.list-disc.list-inside.text-sm.text-red-700
+      - user.errors.full_messages.each do |msg|
+        %li= msg
+
+= form_with url: onboarding_path(onboarding.token), method: :patch, class: "space-y-5" do |f|
+  = render "personal_form", user: user
